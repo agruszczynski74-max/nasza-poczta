@@ -211,7 +211,7 @@
 
         /* =========================================
            GŁÓWNA STRONA
-        ========================================= */
+        ========================================== */
 
         .page {
             position: relative;
@@ -310,7 +310,7 @@
 
         /* =========================================
            LISTY
-        ========================================= */
+        ========================================== */
 
         .letters {
             display: grid;
@@ -436,7 +436,7 @@
 
         /* =========================================
            DRYFUJĄCE KWIATKI I SERDUSZKA
-        ========================================= */
+        ========================================== */
 
         .floating-decor {
             position: fixed;
@@ -540,7 +540,7 @@
 
         /* =========================================
            ANIMACJA OTWIERANIA KOPERTY
-        ========================================= */
+        ========================================== */
 
         .opening-screen {
             position: fixed;
@@ -823,7 +823,7 @@
 
         /* =========================================
            ANIMACJE OGÓLNE
-        ========================================= */
+        ========================================== */
 
         @keyframes loginAppear {
 
@@ -861,7 +861,7 @@
 
         /* =========================================
            TELEFON
-        ========================================= */
+        ========================================== */
 
         @media (max-width: 650px) {
 
@@ -1408,15 +1408,8 @@
 
 
         /*
-         * sessionStorage oznacza:
-         *
-         * wpisujesz hasło raz,
-         * możesz przechodzić między stronami,
-         * wracać do strony głównej,
-         * i hasło nadal jest zapamiętane.
-         *
-         * Po zamknięciu całej sesji przeglądarki
-         * trzeba będzie wpisać je ponownie.
+         * Jeśli hasło zostało już wpisane w tej sesji,
+         * nie pokazujemy ponownie ekranu logowania.
          */
 
         if (
@@ -1428,6 +1421,10 @@
 
         }
 
+
+        /* =========================================
+           SPRAWDZANIE HASŁA
+        ========================================== */
 
         function checkPassword() {
 
@@ -1524,30 +1521,72 @@
             );
 
 
+        /*
+         * Zabezpieczenie przed wielokrotnym kliknięciem.
+         *
+         * Dzięki temu użytkownik nie może uruchomić
+         * kilku animacji naraz.
+         */
+
+        let letterIsOpening = false;
+
+
         letters.forEach(function(letter) {
 
             letter.addEventListener(
                 "click",
                 function(event) {
 
+                    /*
+                     * Nie pozwalamy przeglądarce
+                     * przejść od razu do strony.
+                     *
+                     * Najpierw pokazujemy animację.
+                     */
+
                     event.preventDefault();
 
 
                     /*
-                     * Bierzemy href DOKŁADNIE
-                     * z klikniętego elementu.
+                     * Jeśli animacja już trwa,
+                     * ignorujemy kolejne kliknięcia.
+                     */
+
+                    if (letterIsOpening) {
+                        return;
+                    }
+
+
+                    letterIsOpening = true;
+
+
+                    /*
+                     * Pobieramy adres BEZPOŚREDNIO
+                     * z klikniętego linku.
                      *
-                     * Dzięki temu:
+                     * new URL() zamienia:
                      *
-                     * list1 → list1.html
-                     * list2 → list2.html
-                     * ...
-                     * list8 → list8.html
+                     * list1.html
+                     *
+                     * na pełny adres:
+                     *
+                     * https://agruszczynski74-max.github.io/
+                     * nasza-poczta/list1.html
+                     *
+                     * Dzięki temu GitHub Pages nie powinien
+                     * zgubić ścieżki repozytorium.
                      */
 
                     const destination =
-                        this.getAttribute("href");
+                        new URL(
+                            this.getAttribute("href"),
+                            document.baseURI
+                        ).href;
 
+
+                    /*
+                     * Pokazujemy ekran z kopertą.
+                     */
 
                     openingScreen.classList.add(
                         "active"
@@ -1555,7 +1594,7 @@
 
 
                     /*
-                     * Najpierw pokazujemy kopertę.
+                     * Po 450 ms otwieramy kopertę.
                      */
 
                     setTimeout(function() {
@@ -1569,14 +1608,17 @@
 
                     /*
                      * Po zakończeniu animacji
-                     * przechodzimy do WŁAŚCIWEGO
-                     * klikniętego pliku.
+                     * przechodzimy do właściwego listu.
+                     *
+                     * location.assign() wykonuje normalne
+                     * przejście na przygotowany adres.
                      */
 
                     setTimeout(function() {
 
-                        window.location.href =
-                            destination;
+                        window.location.assign(
+                            destination
+                        );
 
                     }, 1800);
 
@@ -1584,6 +1626,7 @@
             );
 
         });
+
 
     </script>
 
