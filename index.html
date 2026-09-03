@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -282,6 +282,84 @@
 
             color: #806f60;
         }
+
+
+        /* =========================================
+           LICZNIK — ILE JESTEŚMY RAZEM
+        ========================================== */
+
+        .relationship-counter {
+            margin-top: 18px;
+
+            font-family: "Playfair Display", serif;
+
+            color: #705d4c;
+
+            text-align: center;
+
+            animation: counterAppear 1s ease;
+        }
+
+        .counter-title {
+            margin-bottom: 7px;
+
+            font-size: 17px;
+
+            letter-spacing: 1px;
+
+            color: #8b735f;
+        }
+
+        .counter-time {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            font-size: 20px;
+
+            line-height: 1.5;
+        }
+
+        .counter-number {
+            font-size: 24px;
+
+            font-weight: 600;
+
+            color: #5f4e40;
+        }
+
+        .counter-label {
+            font-size: 15px;
+
+            color: #897563;
+
+            margin-right: 4px;
+        }
+
+        @keyframes counterAppear {
+
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        /* =========================================
+           LINIA
+        ========================================== */
 
         .divider {
             display: flex;
@@ -907,39 +985,33 @@
                 text-align: center;
             }
 
+            /* LICZNIK NA TELEFONIE */
 
-            /* =========================================
-               WOLNIEJSZE OZDOBY NA TELEFONIE
-            ========================================== */
+            .relationship-counter {
+                margin-top: 15px;
 
-            .floating-decor {
-                animation-duration: 22s !important;
+                padding: 0 10px;
             }
 
-            .float-1 {
-                animation-duration: 24s !important;
+            .counter-title {
+                font-size: 15px;
             }
 
-            .float-2 {
-                animation-duration: 28s !important;
+            .counter-time {
+                gap: 5px;
+
+                font-size: 17px;
             }
 
-            .float-3 {
-                animation-duration: 25s !important;
+            .counter-number {
+                font-size: 21px;
             }
 
-            .float-4 {
-                animation-duration: 30s !important;
-            }
+            .counter-label {
+                font-size: 13px;
 
-            .float-5 {
-                animation-duration: 26s !important;
+                margin-right: 2px;
             }
-
-            .float-6 {
-                animation-duration: 29s !important;
-            }
-
         }
 
 
@@ -1090,6 +1162,43 @@
         <h1>
             NASZA POCZTA
         </h1>
+
+
+        <!-- =========================================
+             LICZNIK ZWIĄZKU
+        ========================================== -->
+
+        <div class="relationship-counter">
+
+            <div class="counter-title">
+                Jesteśmy razem już ♡
+            </div>
+
+            <div
+                class="counter-time"
+                id="relationshipCounter"
+            >
+                <span class="counter-number">0</span>
+                <span class="counter-label">dni</span>
+
+                <span>·</span>
+
+                <span class="counter-number">0</span>
+                <span class="counter-label">godzin</span>
+
+                <span>·</span>
+
+                <span class="counter-number">0</span>
+                <span class="counter-label">minut</span>
+
+                <span>·</span>
+
+                <span class="counter-number">0</span>
+                <span class="counter-label">sekund</span>
+            </div>
+
+        </div>
+
 
         <p class="subtitle">
             „Abyś zawsze mogła sobie zobaczyć listy ode mnie, kotku ♡”
@@ -1442,6 +1551,11 @@
             document.getElementById("loginError");
 
 
+        /*
+         * Jeśli hasło zostało już wpisane w tej sesji,
+         * nie pokazujemy ponownie ekranu logowania.
+         */
+
         if (
             sessionStorage.getItem("naszaPocztaUnlocked")
             === "true"
@@ -1536,6 +1650,125 @@
 
 
         /* =========================================
+           LICZNIK — ILE JESTEŚMY RAZEM
+        ========================================== */
+
+        const relationshipStart =
+            new Date(2026, 5, 21, 0, 0, 0);
+
+        const relationshipCounter =
+            document.getElementById(
+                "relationshipCounter"
+            );
+
+
+        function updateRelationshipCounter() {
+
+            const now =
+                new Date();
+
+            let difference =
+                now.getTime()
+                - relationshipStart.getTime();
+
+
+            /*
+             * Zabezpieczenie, gdyby ktoś otworzył stronę
+             * przed datą rozpoczęcia związku.
+             */
+
+            if (difference < 0) {
+                difference = 0;
+            }
+
+
+            const totalSeconds =
+                Math.floor(
+                    difference / 1000
+                );
+
+
+            const days =
+                Math.floor(
+                    totalSeconds / 86400
+                );
+
+
+            const hours =
+                Math.floor(
+                    (totalSeconds % 86400) / 3600
+                );
+
+
+            const minutes =
+                Math.floor(
+                    (totalSeconds % 3600) / 60
+                );
+
+
+            const seconds =
+                totalSeconds % 60;
+
+
+            relationshipCounter.innerHTML = `
+
+                <span class="counter-number">
+                    ${days}
+                </span>
+
+                <span class="counter-label">
+                    ${days === 1 ? "dzień" : "dni"}
+                </span>
+
+                <span>·</span>
+
+                <span class="counter-number">
+                    ${hours}
+                </span>
+
+                <span class="counter-label">
+                    ${hours === 1 ? "godzina" : "godzin"}
+                </span>
+
+                <span>·</span>
+
+                <span class="counter-number">
+                    ${minutes}
+                </span>
+
+                <span class="counter-label">
+                    ${minutes === 1 ? "minuta" : "minut"}
+                </span>
+
+                <span>·</span>
+
+                <span class="counter-number">
+                    ${seconds}
+                </span>
+
+                <span class="counter-label">
+                    ${seconds === 1 ? "sekunda" : "sekund"}
+                </span>
+
+            `;
+
+        }
+
+
+        /*
+         * Uruchamiamy licznik od razu,
+         * a następnie aktualizujemy go co sekundę.
+         */
+
+        updateRelationshipCounter();
+
+        setInterval(
+            updateRelationshipCounter,
+            1000
+        );
+
+
+        /* =========================================
            OTWIERANIE KONKRETNEGO LISTU
         ========================================== */
 
@@ -1551,6 +1784,13 @@
             );
 
 
+        /*
+         * Zabezpieczenie przed wielokrotnym kliknięciem.
+         *
+         * Dzięki temu użytkownik nie może uruchomić
+         * kilku animacji naraz.
+         */
+
         let letterIsOpening = false;
 
 
@@ -1560,8 +1800,20 @@
                 "click",
                 function(event) {
 
+                    /*
+                     * Nie pozwalamy przeglądarce
+                     * przejść od razu do strony.
+                     *
+                     * Najpierw pokazujemy animację.
+                     */
+
                     event.preventDefault();
 
+
+                    /*
+                     * Jeśli animacja już trwa,
+                     * ignorujemy kolejne kliknięcia.
+                     */
 
                     if (letterIsOpening) {
                         return;
@@ -1571,6 +1823,11 @@
                     letterIsOpening = true;
 
 
+                    /*
+                     * Pobieramy adres BEZPOŚREDNIO
+                     * z klikniętego linku.
+                     */
+
                     const destination =
                         new URL(
                             this.getAttribute("href"),
@@ -1578,10 +1835,18 @@
                         ).href;
 
 
+                    /*
+                     * Pokazujemy ekran z kopertą.
+                     */
+
                     openingScreen.classList.add(
                         "active"
                     );
 
+
+                    /*
+                     * Po 450 ms otwieramy kopertę.
+                     */
 
                     setTimeout(function() {
 
@@ -1591,6 +1856,11 @@
 
                     }, 450);
 
+
+                    /*
+                     * Po zakończeniu animacji
+                     * przechodzimy do właściwego listu.
+                     */
 
                     setTimeout(function() {
 
