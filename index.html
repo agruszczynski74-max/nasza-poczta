@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -39,7 +40,7 @@
 
         /* =========================================
            LOGOWANIE
-        ========================================= */
+        ========================================== */
 
         .login-screen {
             position: fixed;
@@ -905,6 +906,40 @@
 
                 text-align: center;
             }
+
+
+            /* =========================================
+               WOLNIEJSZE OZDOBY NA TELEFONIE
+            ========================================== */
+
+            .floating-decor {
+                animation-duration: 22s !important;
+            }
+
+            .float-1 {
+                animation-duration: 24s !important;
+            }
+
+            .float-2 {
+                animation-duration: 28s !important;
+            }
+
+            .float-3 {
+                animation-duration: 25s !important;
+            }
+
+            .float-4 {
+                animation-duration: 30s !important;
+            }
+
+            .float-5 {
+                animation-duration: 26s !important;
+            }
+
+            .float-6 {
+                animation-duration: 29s !important;
+            }
+
         }
 
 
@@ -1087,7 +1122,7 @@
                     </div>
 
                     <div class="letter-title">
-                        JAK TĘSKNISZ ♡ 
+                        JAK TĘSKNISZ ♡
                     </div>
 
                 </div>
@@ -1407,11 +1442,6 @@
             document.getElementById("loginError");
 
 
-        /*
-         * Jeśli hasło zostało już wpisane w tej sesji,
-         * nie pokazujemy ponownie ekranu logowania.
-         */
-
         if (
             sessionStorage.getItem("naszaPocztaUnlocked")
             === "true"
@@ -1521,13 +1551,6 @@
             );
 
 
-        /*
-         * Zabezpieczenie przed wielokrotnym kliknięciem.
-         *
-         * Dzięki temu użytkownik nie może uruchomić
-         * kilku animacji naraz.
-         */
-
         let letterIsOpening = false;
 
 
@@ -1537,20 +1560,8 @@
                 "click",
                 function(event) {
 
-                    /*
-                     * Nie pozwalamy przeglądarce
-                     * przejść od razu do strony.
-                     *
-                     * Najpierw pokazujemy animację.
-                     */
-
                     event.preventDefault();
 
-
-                    /*
-                     * Jeśli animacja już trwa,
-                     * ignorujemy kolejne kliknięcia.
-                     */
 
                     if (letterIsOpening) {
                         return;
@@ -1560,23 +1571,6 @@
                     letterIsOpening = true;
 
 
-                    /*
-                     * Pobieramy adres BEZPOŚREDNIO
-                     * z klikniętego linku.
-                     *
-                     * new URL() zamienia:
-                     *
-                     * list1.html
-                     *
-                     * na pełny adres:
-                     *
-                     * https://agruszczynski74-max.github.io/
-                     * nasza-poczta/list1.html
-                     *
-                     * Dzięki temu GitHub Pages nie powinien
-                     * zgubić ścieżki repozytorium.
-                     */
-
                     const destination =
                         new URL(
                             this.getAttribute("href"),
@@ -1584,18 +1578,10 @@
                         ).href;
 
 
-                    /*
-                     * Pokazujemy ekran z kopertą.
-                     */
-
                     openingScreen.classList.add(
                         "active"
                     );
 
-
-                    /*
-                     * Po 450 ms otwieramy kopertę.
-                     */
 
                     setTimeout(function() {
 
@@ -1605,14 +1591,6 @@
 
                     }, 450);
 
-
-                    /*
-                     * Po zakończeniu animacji
-                     * przechodzimy do właściwego listu.
-                     *
-                     * location.assign() wykonuje normalne
-                     * przejście na przygotowany adres.
-                     */
 
                     setTimeout(function() {
 
@@ -1632,3 +1610,4 @@
 
 </body>
 </html>
+```
